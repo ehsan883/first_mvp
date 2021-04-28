@@ -11,7 +11,7 @@ class HomePage extends StatelessWidget {
         title: Text("Leaf"),
       ),
       body: Center(
-        child: Text("Hello World "),
+        child: Text("Hello World"),
       ),
     );
   }
