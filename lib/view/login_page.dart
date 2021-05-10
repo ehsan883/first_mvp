@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; //base of all authentication
+
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart'; // used for Email link authentication
 
 //You have to initialize it like this
+
+
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class LogInPage extends StatefulWidget {
@@ -25,10 +28,13 @@ class _LogInPageState extends State<LogInPage> {
           Builder(builder: (BuildContext context) {
 //5
             return TextButton(
-              style: TextButton.styleFrom(backgroundColor: Colors.black),
-              child: const Text('Sign out'), //This is in the app bar and will logout a person if he is signed in
+              //style: TextButton.styleFrom(backgroundColor: Colors.black),
+              child: const Text(
+                "Sign out", style: TextStyle(color: Colors.white),
+              ),
+              //This is in the app bar and will logout a person if he is signed in
               onPressed: () async { //When pressed it does this
-                final User user = await _auth.currentUser; //getting the current user
+                final User user = _auth.currentUser; //getting the current user
                 if (user == null) {
 //6
                 //Snackbar is this banner that pops up at the bottom e.g for undo
@@ -55,7 +61,8 @@ class _LogInPageState extends State<LogInPage> {
           padding: const EdgeInsets.all(16),
 
           children: <Widget>[
-            _RegisterEmailSection()
+            _RegisterEmailSection(),
+            _EmailPasswordForm()
           ],
             );
       }),
@@ -145,7 +152,7 @@ class _RegisterEmailSectionState extends State<_RegisterEmailSection> {
       });
     } else {
       setState(() {
-        _success = true;
+        _success = false;
       });
     }
   }
@@ -157,3 +164,125 @@ class _RegisterEmailSectionState extends State<_RegisterEmailSection> {
     super.dispose();
   }
 }
+
+
+// Here is the login part. This is after the user is already registered
+
+class _EmailPasswordForm extends StatefulWidget {
+  const _EmailPasswordForm({Key key}) : super(key: key);
+
+  @override
+  __EmailPasswordFormState createState() => __EmailPasswordFormState();
+}
+
+//The whole class is the same. This is for creating the UI
+//I can separate this into a separate class
+//Only difference here is that submit calls a separate function
+// _signInWithEmailAndPassword()
+//Later you also have to add this to your widget list in line 64
+
+class __EmailPasswordFormState extends State<_EmailPasswordForm> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _success;
+  String _userEmail;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            child: const Text('Test sign in with email and password'),
+            padding: const EdgeInsets.all(16),
+            alignment: Alignment.center,
+          ),
+          TextFormField(
+            controller: _emailController,
+            decoration: const InputDecoration(labelText: 'Email'),
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Please enter some text';
+              }
+              return null;
+            },
+          ),
+          TextFormField(
+            controller: _passwordController,
+            decoration: const InputDecoration(labelText: 'Password'),
+            validator: (String value) {
+              if (value.isEmpty) {
+                return 'Please enter some text';
+              }
+              return null;
+            },
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            alignment: Alignment.center,
+            child: ElevatedButton(
+              onPressed: () async {
+                if (_formKey.currentState.validate()) {
+                    _signInWithEmailAndPassword();
+                }
+              },
+              child: const Text('Submit'),
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Text(
+              _success == null
+                  ? ''
+                  :(_success == true
+                  ?'Successfully signed in ' + _userEmail
+                  :"Sign in failed"),
+              style: TextStyle(color: Colors.red),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  //This is where the authentication takes place
+  // You need to add a try catch because if you dont then in case of wrong password
+  //and many other reasons it will throw an exception (add other reasons as well)
+   _signInWithEmailAndPassword() async { try{
+    final User user = (await _auth.signInWithEmailAndPassword(
+      email: _emailController.text,
+      password: _passwordController.text,
+    )).user;
+
+    if (user != null) {
+      setState(() {
+        _success = true;
+        _userEmail = user.email;
+      });
+    } else {
+      setState(() {
+        _success = false;
+      });
+    }}
+    catch (e){
+      setState(() {
+        _success = false;
+      });
+    }
+  }
+
+}
+
+
