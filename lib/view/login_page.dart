@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart'; //base of all authentication
-
+import 'package:flutter_first_mvp/view/home_page.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart'; // used for Email link authentication
 
 //You have to initialize it like this
@@ -240,7 +240,8 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
               _success == null
                   ? ''
                   :(_success == true
-                  ?'Successfully signed in ' + _userEmail
+                  ?Navigator.push(context, MaterialPageRoute(builder: (
+                  builder) => HomePage()))//'Successfully signed in ' + _userEmail
                   :"Sign in failed"),
               style: TextStyle(color: Colors.red),
             ),

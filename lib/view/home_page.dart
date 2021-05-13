@@ -1,10 +1,10 @@
+//Use the way given here to create a bottom navigation bar
+
 import 'package:flutter/material.dart';
-import 'package:flutter_first_mvp/view/widgets/post_card.dart';
-import 'package:flutter_first_mvp/helper/demo_values.dart';
-import 'package:flutter_first_mvp/view/widgets/tab_item.dart';
+import 'package:flutter_first_mvp/view/widgets/posts_list_view_home.dart';
 import 'package:flutter_first_mvp/view/widgets/open_camera.dart';
 
-
+//Is stateful because state changes with bottom navigation bar
 class HomePage extends StatefulWidget {
   const HomePage({Key key}) : super(key: key);
 
@@ -13,63 +13,48 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var _currentTab = TabItem.red;
+  int _currentIndex = 0; //This is for the bottom navigation
 
-  void _selectTab(TabItem tabItem) {
-    setState(() => _currentTab = tabItem);
-  }
-
-  int _currentIndex = 0;
-  List <Widget> _widgetOptions = <Widget>[
-    ListView.builder(
-        itemCount: DemoValues.posts.length, //Here I take the length of the posts which is a class in DemoValues
-        itemBuilder: (BuildContext context, int index){ //Index is the item count. This should be here to know the length of the list
-          //Must give argument because this is defined in the constructor of PostCard
-          return PostCard(postData: DemoValues.posts[index]); //postData is type of data that is returned and shown on the screen as part of List
-
-        }),
+  //This is what happens when you select any of the options from the bottom navigation.
+  //Arranged according to index
+  //This is what is hidden behind those icons
+  List<Widget> _widgetOptions = <Widget>[
+    PostsListHome(),
     OpenCamera(),
     Text("Settings")
   ];
+
+  //This is how setState() functions are created
   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;
     });
   }
+
+  //Here I start to build the main homepage()
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Leaf"),
-      ),
-    body: _widgetOptions.elementAt(_currentIndex),
-    /*ListView.builder(
-        itemCount: DemoValues.posts.length, //Here I take the length of the posts which is a class in DemoValues
-        itemBuilder: (BuildContext context, int index){ //Index is the item count. This should be here to know the length of the list
-          //Must give argument because this is defined in the constructor of PostCard
-          return PostCard(postData: DemoValues.posts[index]); //postData is type of data that is returned and shown on the screen as part of List
-
-        }),*/
-      bottomNavigationBar:BottomNavigationBar (
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home),
-          label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.camera_alt),
-              label: "Camera"),
-          BottomNavigationBarItem(icon: Icon(Icons.settings),
-              label: "Settings"),
-        ],
-        onTap: _onItemTapped,)
-
-
-
+        appBar: AppBar(
+          title: Text("Leaf"),
+        ),
+        // Show in body whatever is at _currentIndex
+        body: _widgetOptions.elementAt(_currentIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          //Here the layout of the bottomnavigationbar is given
+          currentIndex: _currentIndex,
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.camera_alt), label: "Camera"),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.settings), label: "Settings"),
+          ],
+          onTap:
+              _onItemTapped, //Whenever it is tapped this function is called to change the index
+        )
     );
-
- //     body: Center(
- //       child: Text("Hello World"),
- //     ),
-
-
-}}
+    //     body: Center(
+    //       child: Text("Hello World"),
+  }
+}

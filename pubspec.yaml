@@ -26,6 +26,8 @@ dependencies:
   firebase_core: ^1.1.0
   intl: ^0.17.0
   camera: ^0.8.1
+  image_picker: ^0.7.5
+  video_player: ^2.1.1
   path_provider: ^2.0.1
   path:
   firebase_auth: ^1.1.2
