@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_first_mvp/view/widgets/posts_list_view_home.dart';
 import 'package:flutter_first_mvp/view/widgets/open_camera.dart';
+import 'package:flutter_first_mvp/view/widgets/new_post.dart';
+
 
 //Is stateful because state changes with bottom navigation bar
 class HomePage extends StatefulWidget {
@@ -20,7 +22,8 @@ class _HomePageState extends State<HomePage> {
   //This is what is hidden behind those icons
   List<Widget> _widgetOptions = <Widget>[
     PostsListHome(),
-    OpenCamera(),
+    NewPost(),
+    //OpenCamera(), This will come in the comments as a reply
     Text("Settings")
   ];
 

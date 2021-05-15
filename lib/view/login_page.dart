@@ -225,7 +225,7 @@ class __EmailPasswordFormState extends State<_EmailPasswordForm> {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             alignment: Alignment.center,
             child: ElevatedButton(
-              onPressed: () async {
+              onPressed: ()  async {
                 if (_formKey.currentState.validate()) {
                     _signInWithEmailAndPassword();
                 }
