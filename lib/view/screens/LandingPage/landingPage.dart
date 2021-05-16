@@ -18,7 +18,8 @@ class LandingPage extends StatelessWidget {
           Provider.of<LandingHelpers>(context, listen: false).bodyImage(context),
           Provider.of<LandingHelpers>(context, listen: false).taglineText(context),
           Provider.of<LandingHelpers>(context, listen: false).mainButtons(context),
-          Provider.of<LandingHelpers>(context, listen: false).privacyText(context)
+          Provider.of<LandingHelpers>(context, listen: false).privacyText(context),
+
         ],
       ),
     );

@@ -1,6 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter_first_mvp/view/screens/LandingPage/landingHelpers.dart';
+import 'package:flutter_first_mvp/view/screens/LandingPage/landingServices.dart';
 import 'package:flutter_first_mvp/view/screens/Splashscreen/splashScreen.dart';
+import 'package:flutter_first_mvp/view/services/Authentication.dart';
 import 'package:flutter_first_mvp/view/widgets/camera_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +38,10 @@ class Leaf extends StatelessWidget {
             //title: "Firebase Auth Demo",
             debugShowCheckedModeBanner: false,
             home: SplashScreen()),
-        providers: [ChangeNotifierProvider(create: (_)=>LandingHelpers())]);
+        providers: [
+          ChangeNotifierProvider(create: (_)=>LandingService()),
+          ChangeNotifierProvider(create: (_)=>Authentication()),
+          ChangeNotifierProvider(create: (_)=>LandingHelpers())]);
       //LogInPage(title: "Firebase Auth Demo"),
        //For the social media app earlier
   }
