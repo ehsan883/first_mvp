@@ -1,8 +1,10 @@
 import 'package:camera/camera.dart';
 import 'package:flutter_first_mvp/view/screens/LandingPage/landingHelpers.dart';
 import 'package:flutter_first_mvp/view/screens/LandingPage/landingServices.dart';
+import 'package:flutter_first_mvp/view/screens/LandingPage/landingUtils.dart';
 import 'package:flutter_first_mvp/view/screens/Splashscreen/splashScreen.dart';
 import 'package:flutter_first_mvp/view/services/Authentication.dart';
+import 'package:flutter_first_mvp/view/services/FirebaseOperations.dart';
 import 'package:flutter_first_mvp/view/widgets/camera_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +40,9 @@ class Leaf extends StatelessWidget {
             //title: "Firebase Auth Demo",
             debugShowCheckedModeBanner: false,
             home: SplashScreen()),
-        providers: [
+        providers: [ //All the classes with CHangeNotifier have been initialized here
+          ChangeNotifierProvider(create: (_)=>LandingUtils()),
+          ChangeNotifierProvider(create: (_)=>FirebaseOperations()),
           ChangeNotifierProvider(create: (_)=>LandingService()),
           ChangeNotifierProvider(create: (_)=>Authentication()),
           ChangeNotifierProvider(create: (_)=>LandingHelpers())]);

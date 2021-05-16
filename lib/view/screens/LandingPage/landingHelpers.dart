@@ -1,9 +1,11 @@
+
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_first_mvp/constants/Constantcolors.dart';
 import 'package:flutter_first_mvp/view/screens/Homepage/Homepage.dart';
 import 'package:flutter_first_mvp/view/screens/LandingPage/landingServices.dart';
+import 'package:flutter_first_mvp/view/screens/LandingPage/landingUtils.dart';
 import 'package:flutter_first_mvp/view/services/Authentication.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:page_transition/page_transition.dart';
@@ -185,7 +187,8 @@ class LandingHelpers with ChangeNotifier {
                           fontWeight: FontWeight.bold),
                     ),
                     onPressed: (){
-                      Provider.of<LandingService>(context, listen: false).signInSheet(context);
+                      //Provider.of<LandingService>(context, listen: false).signInSheet(context);
+                      Provider.of<LandingUtils>(context, listen: false).selectAvatarOptionsSheet(context);
                     } )
             ],)
           ],
