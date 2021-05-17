@@ -14,9 +14,17 @@ import 'Authentication.dart';
 
 class FirebaseOperations with ChangeNotifier{
 
-  Future uploadUserAvatar(BuildContext context) async{
+  UploadTask imageUploadTask; //TO upload an image
 
-    UploadTask imageUploadTask; //TO upload an image
+  //Tutorial 4
+  String initUserEmail;
+  String initUserImage;
+  String initUserName;
+  String get getInitUserName => initUserName;
+  String get getInitUserImage => initUserImage;
+  String get getInitUserEmail => initUserEmail;
+
+  Future uploadUserAvatar(BuildContext context) async{
 
     //This is to get the image for the Avatar
     Reference imageReference = FirebaseStorage.instance.ref().child(
@@ -41,6 +49,25 @@ class FirebaseOperations with ChangeNotifier{
     return FirebaseFirestore.instance.collection("users")
         .doc(Provider.of<Authentication>(context, listen: false).getUserUid)
         .set(data);
+  }
+
+
+  //Tutorial 4
+
+  Future initUserData (BuildContext context) async {
+    return FirebaseFirestore.instance.collection("users").doc(
+      Provider.of<Authentication>(context, listen: false).getUserUid
+    ).get().then((doc) {
+
+      print("Fetching");
+      initUserName = doc.data()["username"];
+      initUserEmail = doc.data()["useremail"];
+      initUserImage = doc.data()["userimage"];
+      print(initUserName);
+      print(initUserEmail);
+      print(initUserImage);
+      notifyListeners();
+    });
   }
 
 }
