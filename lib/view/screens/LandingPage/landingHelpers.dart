@@ -152,7 +152,7 @@ class LandingHelpers with ChangeNotifier {
         ));
   }
 
-  //This is for the email login
+  //This is for the email login. When the form opens
   //any function inside a widget must take the BuildContext
   emailAuthSheet(BuildContext context) {
     return showModalBottomSheet( //This is the sheet that opens from the bottom

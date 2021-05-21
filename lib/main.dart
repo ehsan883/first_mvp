@@ -8,6 +8,7 @@ import 'package:flutter_first_mvp/view/screens/Profile/profileHelpers.dart';
 import 'package:flutter_first_mvp/view/screens/Splashscreen/splashScreen.dart';
 import 'package:flutter_first_mvp/view/services/Authentication.dart';
 import 'package:flutter_first_mvp/view/services/FirebaseOperations.dart';
+import 'package:flutter_first_mvp/view/utils/postOptions.dart';
 import 'package:flutter_first_mvp/view/utils/uploadPost.dart';
 import 'package:flutter_first_mvp/view/widgets/camera_button.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +46,7 @@ class Leaf extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             home: SplashScreen()),
         providers: [ //All the classes with CHangeNotifier have been initialized here
+          ChangeNotifierProvider(create: (_)=>PostFunctions()),
           ChangeNotifierProvider(create: (_)=>FeedHelpers()),
           ChangeNotifierProvider(create: (_)=>UploadPost()),
           ChangeNotifierProvider(create: (_)=>ProfileHelpers()),

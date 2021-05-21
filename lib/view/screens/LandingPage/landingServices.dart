@@ -43,7 +43,8 @@ class LandingService with ChangeNotifier {
               CircleAvatar(
                   radius: 80.0,
                   backgroundColor: constantColors.transperant,
-                  backgroundImage: FileImage( //Here we are simply getting userAvatar from Utils
+                  backgroundImage: FileImage(
+                      //Here we are simply getting userAvatar from Utils
                       Provider.of<LandingUtils>(context, listen: false)
                           .userAvatar)),
               Container(
@@ -71,7 +72,8 @@ class LandingService with ChangeNotifier {
                         onPressed: () {
                           Provider.of<FirebaseOperations>(context,
                                   listen: false)
-                              .uploadUserAvatar(context) //Upload Avatar to Firebase
+                              .uploadUserAvatar(
+                                  context) //Upload Avatar to Firebase
                               .whenComplete(() {
                             signInSheet(context);
                           });
@@ -87,6 +89,7 @@ class LandingService with ChangeNotifier {
         });
   }
 
+//Functionality implemented in tutorial 7
   Widget passwordLessSignIn(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.40,
@@ -104,14 +107,47 @@ class LandingService with ChangeNotifier {
               children:
                   snapshot.data.docs.map((DocumentSnapshot documentSnapshot) {
                 return ListTile(
-                  trailing: IconButton(
-                    icon: Icon(
-                      FontAwesomeIcons.trashAlt,
-                      color: constantColors.redColor,
+                  trailing: Container(
+                    width: 120.0,
+                    height: 50.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        IconButton(
+                            icon: Icon(
+                              FontAwesomeIcons.check,
+                              color: constantColors.blueColor,
+                            ),
+                            onPressed: () {
+                              Provider.of<Authentication>(context,
+                                      listen: false)
+                                  .logIntoAccount(
+                                      documentSnapshot.get("useremail"),
+                                      documentSnapshot.get("userpassword"))
+                                  .whenComplete(() {
+                                Navigator.pushReplacement(
+                                    context,
+                                    PageTransition(
+                                        child: Homepage(),
+                                        type: PageTransitionType.leftToRight));
+                              });
+                            }),
+                        IconButton(
+                            icon: Icon(
+                              FontAwesomeIcons.trashAlt,
+                              color: constantColors.redColor,
+                            ),
+                            onPressed: () {
+                              Provider.of<FirebaseOperations>(context,
+                                      listen: false)
+                                  .deleteUserData(
+                                      documentSnapshot.get("useruid"));
+                            }),
+                      ],
                     ),
-                    onPressed: () {}, //Not implemented at the moment
                   ),
                   leading: CircleAvatar(
+                    backgroundColor: constantColors.darkColor,
                     backgroundImage:
                         NetworkImage(documentSnapshot.get('userimage')),
                   ),
@@ -119,7 +155,7 @@ class LandingService with ChangeNotifier {
                     documentSnapshot.get('useremail'),
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: constantColors.greenColor,
+                        color: constantColors.whiteColor,
                         fontSize: 12.0),
                   ),
                   title: Text(
@@ -199,7 +235,8 @@ class LandingService with ChangeNotifier {
                               FontAwesomeIcons.check,
                               color: constantColors.whiteColor,
                             ),
-                            onPressed: () { //Here it checks credentials
+                            onPressed: () {
+                              //Here it checks credentials
                               if (userEmailController.text.isNotEmpty) {
                                 Provider.of<Authentication>(context,
                                         listen: false)
@@ -314,7 +351,7 @@ class LandingService with ChangeNotifier {
                                   fontSize: 18.0),
                             )),
                         Padding(
-                          //This is the tickButton to submit the details
+                            //This is the tickButton to submit the details
                             padding: const EdgeInsets.only(top: 8.0),
                             child: FloatingActionButton(
                                 backgroundColor: constantColors.redColor,
@@ -331,13 +368,15 @@ class LandingService with ChangeNotifier {
                                         .createAccount(userEmailController.text,
                                             userPasswordController.text)
                                         .whenComplete(() {
-                                          print("Creating Collection");
-                                          //Creates a user collection
-                                          //With all the details
+                                      print("Creating Collection");
+                                      //Creates a user collection
+                                      //With all the details
                                       Provider.of<FirebaseOperations>(context,
                                               listen: false)
                                           .createUserCollection(context, {
-                                            //Here onwards is all data which is passed
+                                        //Here onwards is all data which is passed
+                                        "userpassword":
+                                            userPasswordController.text,
                                         "useruid": Provider.of<Authentication>(
                                                 context,
                                                 listen: false)

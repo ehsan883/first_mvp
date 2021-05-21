@@ -5,6 +5,7 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_first_mvp/constants/Constantcolors.dart';
 import 'package:flutter_first_mvp/view/services/Authentication.dart';
+import 'package:flutter_first_mvp/view/utils/postOptions.dart';
 import 'package:flutter_first_mvp/view/utils/uploadPost.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -69,11 +70,10 @@ class FeedHelpers with ChangeNotifier {
                 );
               } else {
                 return loadPosts(context, snapshot);
-
               }
             },
           ),
-          height: MediaQuery.of(context).size.height ,
+          height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
               color: constantColors.darkColor.withOpacity(0.6),
@@ -152,7 +152,7 @@ class FeedHelpers with ChangeNotifier {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top:8.0),
+              padding: const EdgeInsets.only(top: 8.0),
               child: Container(
                 height: MediaQuery.of(context).size.height * 0.45,
                 width: MediaQuery.of(context).size.width,
@@ -165,32 +165,63 @@ class FeedHelpers with ChangeNotifier {
             ),
             //For the icons of like comment and badging the image
             Padding(
-              padding: const EdgeInsets.only(top:8.0, left: 16.0),
+              padding: const EdgeInsets.only(top: 8.0, left: 16.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
                     width: 80.0,
                     child: Row(
+                      //shows number of likes
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         GestureDetector(
+                          onLongPress: () {
+                            Provider.of<PostFunctions>(context, listen: false)
+                                .showLikes(
+                                    context, documentSnapshot.get("caption"));
+                          },
+                          onTap: () {
+                            print("Adding like...");
+                            Provider.of<PostFunctions>(context, listen: false)
+                                .addLike(
+                                    context,
+                                    documentSnapshot.get("caption"),
+                                    Provider.of<Authentication>(context,
+                                            listen: false)
+                                        .getUserUid);
+                          },
                           child: Icon(
                             FontAwesomeIcons.heart,
                             color: constantColors.redColor,
                             size: 22.0,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            "0",
-                            style: TextStyle(
-                                color: constantColors.whiteColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0),
-                          ),
-                        ) //shows number of likes
+                        StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection("posts")
+                                .doc(documentSnapshot.get("caption"))
+                                .collection("likes")
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else {
+                                return Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    snapshot.data.docs.length.toString(),
+                                    style: TextStyle(
+                                        color: constantColors.whiteColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18.0),
+                                  ),
+                                );
+                              }
+                            })
                       ],
                     ),
                   ),
@@ -200,22 +231,42 @@ class FeedHelpers with ChangeNotifier {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         GestureDetector(
+                          onTap: () {
+                            Provider.of<PostFunctions>(context, listen: false)
+                                .showCommentsSheet(context, documentSnapshot,
+                                    documentSnapshot.get("caption"));
+                          },
                           child: Icon(
                             FontAwesomeIcons.comment,
                             color: constantColors.blueColor,
                             size: 22.0,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            "0",
-                            style: TextStyle(
-                                color: constantColors.whiteColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0),
-                          ),
-                        ) //shows number of likes
+                        StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection("posts")
+                                .doc(documentSnapshot.get("caption"))
+                                .collection("comments")
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else {
+                                return Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    snapshot.data.docs.length.toString(),
+                                    style: TextStyle(
+                                        color: constantColors.whiteColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18.0),
+                                  ),
+                                );
+                              }
+                            })
                       ],
                     ),
                   ),
@@ -225,40 +276,60 @@ class FeedHelpers with ChangeNotifier {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         GestureDetector(
+                          onTap: () {
+                            Provider.of<PostFunctions>(context, listen: false)
+                                .showRewards(
+                                    context, documentSnapshot.get("caption"));
+                          },
                           child: Icon(
                             FontAwesomeIcons.award,
                             color: constantColors.yellowColor,
                             size: 22.0,
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            "0",
-                            style: TextStyle(
-                                color: constantColors.whiteColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0),
-                          ),
-                        ) //shows number of likes
+                        StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection("posts")
+                                .doc(documentSnapshot.get("caption"))
+                                .collection("awards")
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else {
+                                return Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text(
+                                    snapshot.data.docs.length.toString(),
+                                    style: TextStyle(
+                                        color: constantColors.whiteColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18.0),
+                                  ),
+                                );
+                              }
+                            }) //shows number of likes
                       ],
                     ),
                   ),
                   Spacer(),
-                  Provider.of<Authentication>(context, listen: false).getUserUid ==
-                      documentSnapshot.get("useruid")
+                  Provider.of<Authentication>(context, listen: false)
+                              .getUserUid ==
+                          documentSnapshot.get("useruid")
                       ? IconButton(
-                      icon: Icon(EvaIcons.moreVertical,
-                          color: constantColors.whiteColor),
-                      onPressed: () {})
+                          icon: Icon(EvaIcons.moreVertical,
+                              color: constantColors.whiteColor),
+                          onPressed: () {})
                       : Container(
-                    width: 0.0,
-                    height: 0.0,
-                  )
+                          width: 0.0,
+                          height: 0.0,
+                        )
                 ],
               ),
             ),
-
           ],
         ),
       );

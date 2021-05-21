@@ -80,5 +80,18 @@ class FirebaseOperations with ChangeNotifier{
     ).set(data);
   }
 
+//Tutorial 6
+
+  Future deleteUserData(String userUid) async{
+    return FirebaseFirestore.instance.collection("users").doc(
+      userUid).delete();
+  }
+
+//Tutorial 7
+
+  Future addAward(String postId, dynamic data) async{
+    return FirebaseFirestore.instance.collection("posts").doc(postId)
+        .collection("awards").add(data);
+  }
 
 }
