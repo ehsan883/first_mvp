@@ -28,6 +28,7 @@ class HomepageHelpers with ChangeNotifier {
         },
         backgroundColor: Color(0xff040307),
         items: [
+          //These are the icons shown on the NavBar
           CustomNavigationBarItem(icon: Icon(EvaIcons.home)),
           CustomNavigationBarItem(icon: Icon(Icons.message_rounded)),
           CustomNavigationBarItem(

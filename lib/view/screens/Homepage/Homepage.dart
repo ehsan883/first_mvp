@@ -17,11 +17,14 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   ConstantColors constantColors = ConstantColors();
+  //Controls the transitioning between pages
+  //Use this to jump to page etc
   final PageController homepageController = PageController();
   int pageIndex = 0;
 
   @override
   void initState(){
+    //Gets the user data which was used to login
     Provider.of<FirebaseOperations>(context, listen: false).initUserData(context);
     super.initState();
   }
@@ -33,6 +36,7 @@ class _HomepageState extends State<Homepage> {
       body: PageView(
         controller: homepageController,
         children: [ //This is to have 3 different views for feed, messaging and profile
+          //selected from the bottomNavigationBar
           Feed(),
           Chatroom(),
           Profile()

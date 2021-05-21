@@ -32,6 +32,7 @@ class ProfileHelpers with ChangeNotifier {
                   child: CircleAvatar(
                     backgroundColor: constantColors.transperant,
                     radius: 60.0,
+                    //This is how you get data from the cloud via snapshot
                     backgroundImage: NetworkImage(
                       snapshot.data.get("userimage"),
                     ),
@@ -267,7 +268,7 @@ class ProfileHelpers with ChangeNotifier {
                         decorationColor: constantColors.whiteColor),
                   ),
                   onPressed: () {
-                    Navigator.pop(context);
+                    Navigator.pop(context); //Just simply takes you back
                   }),
               MaterialButton(
                   color: constantColors.redColor,

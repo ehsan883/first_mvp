@@ -58,7 +58,7 @@ class Profile extends StatelessWidget {
                 ]),
           ),
         ),
-        body: SingleChildScrollView(
+        body: SingleChildScrollView( //Because of this I can scroll the body
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(

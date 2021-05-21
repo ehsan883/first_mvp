@@ -43,7 +43,7 @@ class LandingService with ChangeNotifier {
               CircleAvatar(
                   radius: 80.0,
                   backgroundColor: constantColors.transperant,
-                  backgroundImage: FileImage(
+                  backgroundImage: FileImage( //Here we are simply getting userAvatar from Utils
                       Provider.of<LandingUtils>(context, listen: false)
                           .userAvatar)),
               Container(
@@ -71,7 +71,7 @@ class LandingService with ChangeNotifier {
                         onPressed: () {
                           Provider.of<FirebaseOperations>(context,
                                   listen: false)
-                              .uploadUserAvatar(context)
+                              .uploadUserAvatar(context) //Upload Avatar to Firebase
                               .whenComplete(() {
                             signInSheet(context);
                           });
@@ -109,7 +109,7 @@ class LandingService with ChangeNotifier {
                       FontAwesomeIcons.trashAlt,
                       color: constantColors.redColor,
                     ),
-                    onPressed: () {},
+                    onPressed: () {}, //Not implemented at the moment
                   ),
                   leading: CircleAvatar(
                     backgroundImage:
@@ -199,7 +199,7 @@ class LandingService with ChangeNotifier {
                               FontAwesomeIcons.check,
                               color: constantColors.whiteColor,
                             ),
-                            onPressed: () {
+                            onPressed: () { //Here it checks credentials
                               if (userEmailController.text.isNotEmpty) {
                                 Provider.of<Authentication>(context,
                                         listen: false)
@@ -314,6 +314,7 @@ class LandingService with ChangeNotifier {
                                   fontSize: 18.0),
                             )),
                         Padding(
+                          //This is the tickButton to submit the details
                             padding: const EdgeInsets.only(top: 8.0),
                             child: FloatingActionButton(
                                 backgroundColor: constantColors.redColor,
@@ -322,6 +323,8 @@ class LandingService with ChangeNotifier {
                                   color: constantColors.whiteColor,
                                 ),
                                 onPressed: () {
+                                  //Here Account is being created on Firebase
+                                  //Here it only needs email and password
                                   if (userEmailController.text.isNotEmpty) {
                                     Provider.of<Authentication>(context,
                                             listen: false)
@@ -329,9 +332,12 @@ class LandingService with ChangeNotifier {
                                             userPasswordController.text)
                                         .whenComplete(() {
                                           print("Creating Collection");
+                                          //Creates a user collection
+                                          //With all the details
                                       Provider.of<FirebaseOperations>(context,
                                               listen: false)
                                           .createUserCollection(context, {
+                                            //Here onwards is all data which is passed
                                         "useruid": Provider.of<Authentication>(
                                                 context,
                                                 listen: false)

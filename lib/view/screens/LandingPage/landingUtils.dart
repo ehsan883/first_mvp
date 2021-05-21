@@ -19,6 +19,10 @@ class LandingUtils with ChangeNotifier {
 
   String get getUserAvatarUrl => userAvatarUrl;
 
+  //This is how you take image from camera or upload from gallery
+  //ImagePicker() used
+
+  //Image source is given where the function is called
   Future pickUserAvatar(BuildContext context, ImageSource source) async {
     final pickedUserAvatar = await picker.getImage(source: source);
     pickUserAvatar == null
@@ -60,6 +64,7 @@ class LandingUtils with ChangeNotifier {
                               fontSize: 18.0),
                         ),
                         onPressed: () {
+                          //Here it opens the gallery for selecting the image
                           pickUserAvatar(context, ImageSource.gallery)
                               .whenComplete(() {
                             Navigator.pop(context);
@@ -77,6 +82,7 @@ class LandingUtils with ChangeNotifier {
                               fontSize: 18.0),
                         ),
                         onPressed: () {
+                          //Here it opens the camera for taking the image
                           pickUserAvatar(context, ImageSource.camera)
                               .whenComplete(() {
                             Navigator.pop(context);

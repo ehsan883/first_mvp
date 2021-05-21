@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:flutter_first_mvp/view/screens/Feed/feedHelpers.dart';
 import 'package:flutter_first_mvp/view/screens/Homepage/homepageHelpers.dart';
 import 'package:flutter_first_mvp/view/screens/LandingPage/landingHelpers.dart';
 import 'package:flutter_first_mvp/view/screens/LandingPage/landingServices.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_first_mvp/view/screens/Profile/profileHelpers.dart';
 import 'package:flutter_first_mvp/view/screens/Splashscreen/splashScreen.dart';
 import 'package:flutter_first_mvp/view/services/Authentication.dart';
 import 'package:flutter_first_mvp/view/services/FirebaseOperations.dart';
+import 'package:flutter_first_mvp/view/utils/uploadPost.dart';
 import 'package:flutter_first_mvp/view/widgets/camera_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,6 +45,8 @@ class Leaf extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             home: SplashScreen()),
         providers: [ //All the classes with CHangeNotifier have been initialized here
+          ChangeNotifierProvider(create: (_)=>FeedHelpers()),
+          ChangeNotifierProvider(create: (_)=>UploadPost()),
           ChangeNotifierProvider(create: (_)=>ProfileHelpers()),
           ChangeNotifierProvider(create: (_)=>HomepageHelpers()),
           ChangeNotifierProvider(create: (_)=>LandingUtils()),

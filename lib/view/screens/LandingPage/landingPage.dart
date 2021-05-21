@@ -15,6 +15,8 @@ class LandingPage extends StatelessWidget {
       body: Stack(
         children: [bodyColor(),
           //He just made the widget separately and called it here
+          //This is how I can call the widgets which have Changenotifier
+          //listen: false because i just want to read it and not observe it continuously
           Provider.of<LandingHelpers>(context, listen: false).bodyImage(context),
           Provider.of<LandingHelpers>(context, listen: false).taglineText(context),
           Provider.of<LandingHelpers>(context, listen: false).mainButtons(context),

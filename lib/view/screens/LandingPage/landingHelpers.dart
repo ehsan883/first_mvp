@@ -1,4 +1,3 @@
-
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -66,6 +65,7 @@ class LandingHelpers with ChangeNotifier {
         ));
   }
 
+  //This is where new screens are being opened and app goes further
   Widget mainButtons(BuildContext context) {
     return Positioned(
         top: 630,
@@ -75,25 +75,26 @@ class LandingHelpers with ChangeNotifier {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GestureDetector(
-                onTap: (){
-                  emailAuthSheet(context);
-                },
+                  onTap: () {
+                    emailAuthSheet(context);
+                  },
                   child: Container(
-                child: Icon(
-                  EvaIcons.emailOutline,
-                  color: constantColors.yellowColor,
-                ),
-                width: 80.0,
-                height: 40.0,
-                decoration: BoxDecoration(
-                    border: Border.all(color: constantColors.yellowColor),
-                    borderRadius: BorderRadius.circular(10.0)),
-              )),
+                    //This is the container of the single button
+                    child: Icon(
+                      EvaIcons.emailOutline,
+                      color: constantColors.yellowColor,
+                    ),
+                    width: 80.0,
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: constantColors.yellowColor),
+                        borderRadius: BorderRadius.circular(10.0)),
+                  )),
               GestureDetector(
                   onTap: () {
                     print("SignIn with Google");
                     Provider.of<Authentication>(context, listen: false)
-                        .signInWithGoogle()
+                        .signInWithGoogle() //Used to sign-in
                         .whenComplete(() {
                       Navigator.pushReplacement(
                           context,
@@ -113,7 +114,7 @@ class LandingHelpers with ChangeNotifier {
                         border: Border.all(color: constantColors.redColor),
                         borderRadius: BorderRadius.circular(10.0)),
                   )),
-              GestureDetector(
+              GestureDetector( //onTap is not yet defined
                   child: Container(
                 child: Icon(
                   FontAwesomeIcons.facebookF,
@@ -152,56 +153,72 @@ class LandingHelpers with ChangeNotifier {
   }
 
   //This is for the email login
-  emailAuthSheet(BuildContext context){
-    return showModalBottomSheet(
+  //any function inside a widget must take the BuildContext
+  emailAuthSheet(BuildContext context) {
+    return showModalBottomSheet( //This is the sheet that opens from the bottom
         context: context,
-        builder: (context){
-      return Container(
-        child: Column(
-          children: [
-            Padding(padding: const EdgeInsets.symmetric(horizontal: 150.0),
-            child: Divider(
-              thickness: 4.0,
-              color: constantColors.whiteColor,
-            ),),
-            Provider.of<LandingService>(context,listen: false)
-            .passwordLessSignIn(context),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        builder: (context) { //If we want to access the context of the upper widget
+          //Then we have to use the builder. In this case use context in Provider
+          return Container(
+            child: Column(
               children: [
-              MaterialButton(
-                color: constantColors.blueColor,
-                  child: Text("Log in",
-                  style: TextStyle(color: constantColors.whiteColor,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 150.0),
+                  child: Divider(
+                    thickness: 4.0,
+                    color: constantColors.whiteColor,
                   ),
-                  onPressed: (){
-                    Provider.of<LandingService>(context, listen: false).logInSheet(context);
-                  } ),
-                MaterialButton(
-                  color: constantColors.redColor,
-                    child: Text("Sign in",
-                      style: TextStyle(color: constantColors.whiteColor,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: (){
-                      //Provider.of<LandingService>(context, listen: false).signInSheet(context);
-                      Provider.of<LandingUtils>(context, listen: false).selectAvatarOptionsSheet(context);
-                    } )
-            ],)
-          ],
-        ),
-        height: MediaQuery.of(context).size.height*0.5,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          color: constantColors.blueGreyColor,
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0),
-          topRight: Radius.circular(15.0))
-        ),
-      );
-    });
-  }
+                ),
+                //This is the second child of column which is the passwordless sign in
+                //This contains all the design and functionality
+                Provider.of<LandingService>(context, listen: false)
+                    .passwordLessSignIn(context),
+                //This is the third child with the Log-in and Signin buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    MaterialButton(
+                        color: constantColors.blueColor,
+                        child: Text(
+                          "Log in",
+                          style: TextStyle(
+                              color: constantColors.whiteColor,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          //It opens a loginSheet
+                          Provider.of<LandingService>(context, listen: false)
+                              .logInSheet(context);
+                        }),
+                    MaterialButton(
+                        color: constantColors.redColor,
+                        child: Text(
+                          "Sign in",
+                          style: TextStyle(
+                              color: constantColors.whiteColor,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          //Provider.of<LandingService>(context, listen: false).signInSheet(context);
 
+                          //Here a signIn Sheet is opened to create profile for the first time
+                          Provider.of<LandingUtils>(context, listen: false)
+                              .selectAvatarOptionsSheet(context);
+                        })
+                  ],
+                )
+              ],
+            ),
+            height: MediaQuery.of(context).size.height * 0.5,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                color: constantColors.blueGreyColor,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15.0),
+                    topRight: Radius.circular(15.0))),
+          );
+        });
+  }
 }

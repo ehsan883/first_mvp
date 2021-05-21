@@ -46,9 +46,11 @@ class FirebaseOperations with ChangeNotifier{
   }
 
   Future createUserCollection(BuildContext context, dynamic data) async {
+    //Here first a collection called users is created
+    //In that there is a document created with the name of UserUid in which the data is stored
     return FirebaseFirestore.instance.collection("users")
         .doc(Provider.of<Authentication>(context, listen: false).getUserUid)
-        .set(data);
+        .set(data); //Here data is set i.e userId, password, avatar etc
   }
 
 
@@ -69,5 +71,14 @@ class FirebaseOperations with ChangeNotifier{
       notifyListeners();
     });
   }
+
+  //Tutorial 5
+  //To upload data to posts collection in firebase
+  Future uploadPostData(String postId, dynamic data) async{
+    return FirebaseFirestore.instance.collection("posts").doc(
+      postId
+    ).set(data);
+  }
+
 
 }
